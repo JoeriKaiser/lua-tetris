@@ -1,10 +1,12 @@
 local GameState = require("src.game_state")
 local Graphics = require("src.graphics")
 local Pieces = require("src.pieces")
-local Grid = require("src.grid")
 
 function love.load()
     GameState.reset()
+
+    local font = love.graphics.newFont("assets/font.ttf", 32)
+    love.graphics.setFont(font)
 end
 
 function love.update(dt)
@@ -22,6 +24,7 @@ function love.keypressed(key)
 end
 
 function love.draw()
+    Graphics.draw_background()
     Graphics.draw_grid()
     Graphics.draw_current_piece()
     Graphics.draw_ui()

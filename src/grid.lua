@@ -50,6 +50,7 @@ function Grid.lock_piece(piece)
 end
 
 function Grid.clear_lines()
+    local lines_to_clear = {}
     for y = Constants.GRID_HEIGHT, 1, -1 do
         local complete = true
         for x = 1, Constants.GRID_WIDTH do
@@ -58,16 +59,24 @@ function Grid.clear_lines()
                 break
             end
         end
-
         if complete then
-            table.remove(Grid.cells, y)
-            table.insert(Grid.cells, 1, {})
-            for x = 1, Constants.GRID_WIDTH do
-                Grid.cells[1][x] = 0
-            end
-            Grid.score = Grid.score + 100
+            table.insert(lines_to_clear, y)
         end
     end
+
+    for _, y in ipairs(lines_to_clear) do
+        table.remove(Grid.cells, y)
+    end
+
+    for i = 1, #lines_to_clear do
+        local new_row = {}
+        for x = 1, Constants.GRID_WIDTH do
+            new_row[x] = 0
+        end
+        table.insert(Grid.cells, 1, new_row)
+    end
+
+    Grid.score = Grid.score + (#lines_to_clear * 100)
 end
 
 return Grid
