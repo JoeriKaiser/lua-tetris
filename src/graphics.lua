@@ -111,4 +111,30 @@ function Graphics.draw_ui()
     end
 end
 
+function Graphics.draw_next_piece()
+    local next_piece = Pieces.next
+    if not next_piece then return end
+
+    local window_width = love.graphics.getWidth()
+    local preview_width = Constants.BLOCK_SIZE * 4
+    local preview_x = window_width - preview_width - 40
+    local preview_y = 50
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("NEXT", preview_x, preview_y - 40)
+
+    for y = 1, #next_piece.shape do
+        for x = 1, #next_piece.shape[y] do
+            if next_piece.shape[y][x] == 1 then
+                love.graphics.setColor(Constants.PIECE_COLORS[next_piece.shape_index])
+                love.graphics.rectangle("fill",
+                    preview_x + (x-1) * Constants.BLOCK_SIZE,
+                    preview_y + (y-1) * Constants.BLOCK_SIZE,
+                    Constants.BLOCK_SIZE - 1,
+                    Constants.BLOCK_SIZE - 1)
+            end
+        end
+    end
+end
+
 return Graphics

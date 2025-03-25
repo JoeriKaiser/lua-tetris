@@ -3,6 +3,7 @@ local Grid = require("src.grid")
 
 local Pieces = {
   current = nil,
+  next = nil,
   -- SRS wall kick data
   WALL_KICK_DATA = {
       -- For J, L, S, T, Z pieces
@@ -83,14 +84,28 @@ Pieces.TETROMINOES = {
 }
 
 function Pieces.spawn_new()
-  local shape_index = love.math.random(#Pieces.TETROMINOES)
-  Pieces.current = {
-      shape = Pieces.TETROMINOES[shape_index],
-      shape_index = shape_index,
-      x = math.floor(Constants.GRID_WIDTH / 2) - 1,
-      y = 1,
-  }
-  return Pieces.current
+    if Pieces.next then
+        Pieces.current = Pieces.next
+    else
+        local shape_index = love.math.random(#Pieces.TETROMINOES)
+        Pieces.current = {
+            shape = Pieces.TETROMINOES[shape_index],
+            shape_index = shape_index,
+            x = math.floor(Constants.GRID_WIDTH / 2) - 1,
+            y = 1,
+        }
+    end
+
+    -- Generate next piece
+    local shape_index = love.math.random(#Pieces.TETROMINOES)
+    Pieces.next = {
+        shape = Pieces.TETROMINOES[shape_index],
+        shape_index = shape_index,
+        x = math.floor(Constants.GRID_WIDTH / 2) - 1,
+        y = 1,
+    }
+
+    return Pieces.current
 end
 
 function Pieces.rotate(direction)

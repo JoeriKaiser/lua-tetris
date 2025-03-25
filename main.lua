@@ -27,5 +27,6 @@ function love.draw()
     Graphics.draw_background()
     Graphics.draw_grid()
     Graphics.draw_current_piece()
+    Graphics.draw_next_piece()
     Graphics.draw_ui()
 end
